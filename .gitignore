@@ -1,0 +1,27 @@
+# Секреты: токен бота и ключи LLM живут только в .env (NFR-1)
+.env
+.env.local
+*.env.local
+
+# Артефакты сборки и проверок
+/bin/
+/.bin/
+/healthbot
+/healthbot-*
+/coverage.out
+*.test
+
+# Логи и рабочие каталоги бота
+/logs/
+/tmp/
+/.sandbox-cache/
+/настройки/
+/.healthbot/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Локальные отчёты аудита VPS (не публиковать)
+/vps-audit-*.txt

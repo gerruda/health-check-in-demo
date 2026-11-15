@@ -1,0 +1,21 @@
+# pre-commit — быстрые локальные проверки перед коммитом (ТЗ §9).
+# Установка: pip install pre-commit && pre-commit install
+# Требуются: gitleaks, make (golangci-lint ставится сам в .bin/).
+repos:
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks (секреты не уходят в git)
+        entry: gitleaks detect --source . --no-banner
+        language: system
+        pass_filenames: false
+      - id: gofmt-check
+        name: formatting (gofmt + gofumpt + goimports)
+        entry: make fmt-check
+        language: system
+        pass_filenames: false
+      - id: golangci-lint
+        name: golangci-lint
+        entry: make lint
+        language: system
+        pass_filenames: false

@@ -1,0 +1,11 @@
+# Prometheus на том же VPS, что и healthbot.
+# Бот слушает METRICS_LISTEN=127.0.0.1:9090; если Prometheus в Docker,
+# используй network_mode: host (см. docker-compose.monitoring.yml).
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: healthbot
+    static_configs:
+      - targets: ["127.0.0.1:9090"]

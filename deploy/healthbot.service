@@ -1,0 +1,27 @@
+[Unit]
+Description=healthbot Telegram trainer
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=healthbot
+Group=healthbot
+WorkingDirectory=/opt/healthbot
+EnvironmentFile=/opt/healthbot/.env
+ExecStart=/opt/healthbot/bin/healthbot
+Restart=always
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/healthbot/data /opt/healthbot/logs
+
+# 1 ГБ VPS: бот с API-LLM укладывается в ~100–200 МБ.
+MemoryMax=300M
+CPUQuota=90%
+
+[Install]
+WantedBy=multi-user.target

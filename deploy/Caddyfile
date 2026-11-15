@@ -1,0 +1,12 @@
+# Пример для VPS: Caddy сам получает TLS-сертификат (нужен DNS A → IP VPS).
+# Замени bot.example.com на свой домен.
+bot.example.com {
+	encode gzip
+	handle /telegram/webhook {
+		reverse_proxy 127.0.0.1:8080
+	}
+	handle /healthz {
+		reverse_proxy 127.0.0.1:8080
+	}
+	respond 404
+}

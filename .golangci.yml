@@ -1,0 +1,52 @@
+# golangci-lint v2.15.0 — конфиг healthbot (ТЗ §9, §10).
+# Запуск: make lint. Бинарь фиксированной версии ставится в .bin/.
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - gosec
+    - revive
+    - testifylint
+    - errorlint
+  settings:
+    govet:
+      enable:
+        - shadow
+        - lostcancel
+        - nilness
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+        - name: package-comments
+          disabled: true
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+  settings:
+    # module-path обязателен: путь модуля healthbot без точки, иначе gofumpt
+    # считает внутренние импорты стандартной библиотекой и ломает группы.
+    gofumpt:
+      module-path: healthbot
+    goimports:
+      local-prefixes:
+        - healthbot

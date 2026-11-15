@@ -1,0 +1,35 @@
+# Опционально: Prometheus + Grafana на VPS.
+# ВНИМАНИЕ: 1 ГБ RAM — тесно. Если начнёт OOM, вынеси мониторинг на другой хост
+# или добавь swap. Лимиты памяти обязательны.
+services:
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    container_name: healthbot-prometheus
+    network_mode: host
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=7d
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    mem_limit: 180m
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: healthbot-grafana
+    # host network нужен, чтобы datasource ходил на 127.0.0.1:9090;
+    # Grafana слушает только loopback.
+    network_mode: host
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: change-me
+      GF_SERVER_HTTP_ADDR: 127.0.0.1
+      GF_SERVER_HTTP_PORT: "3000"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    mem_limit: 220m
+
+volumes:
+  prometheus-data:
+  grafana-data:
